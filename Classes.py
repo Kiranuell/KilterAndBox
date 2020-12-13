@@ -2,8 +2,29 @@ import sys
 import sqlite3
 from PyQt5.QtWidgets import *
 
-con = sqlite3.connect("testbox.db") # или :memory: чтобы сохранить в RAM
+con = sqlite3.connect("testbox.db")
 cur = con.cursor()
+
+def split(arr, size):
+    arrs = []
+    if len(arr) <= size:
+        return [arr]
+    while len(arr) > size:
+        pice = arr[:size]
+        arrs.append(pice)
+        arr = arr[size:]
+    arrs.append(arr)
+    while len(arrs[-1]) < size:
+        arrs[-1].append(0)
+    return arrs
+
+def join(arr):
+    arrs = []
+    for i in arr:
+        for j in i:
+            if j:
+                arrs.append(j)
+    return arrs
 
 class BOX(QWidget):
     def __init__(self):

@@ -140,6 +140,7 @@ class ITOG(QWidget):
         self.findBox.resize(self.size().width() - 210, 30)
         self.findItem.resize(self.size().width() - 275, 30)
 
+
     def boxUpdate(self):
         # кнопки коробок
         boxs = cur.execute("SELECT ID FROM box")
