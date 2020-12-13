@@ -24,12 +24,24 @@ class Kilter(QWidget):
         self.setWindowTitle('KilterAndBox')
         self.drawStuff(None)
 
-        self.returne = QPushButton(self)
-        self.returne.move(15, 15)
-        self.returne.resize(50, 30)
-        self.returne.setText("назад")
-        self.returne.setVisible(False)
-        self.returne.clicked.connect(self.back)
+        self.backButton = QPushButton(self)
+        self.backButton.move(15, 15)
+        self.backButton.resize(50, 30)
+        self.backButton.setText("назад")
+        self.backButton.setVisible(False)
+        self.backButton.clicked.connect(self.back)
+
+        self.addBoxButton = QPushButton(self)
+        self.addBoxButton.move(15, 15)
+        self.addBoxButton.resize(80, 30)
+        self.addBoxButton.setText("нов.коробка")
+        self.addBoxButton.clicked.connect(self.addBox)
+
+        self.addItemButton = QPushButton(self)
+        self.addItemButton.move(100, 15)
+        self.addItemButton.resize(80, 30)
+        self.addItemButton.setText("нов.предмет")
+        self.addItemButton.clicked.connect(self.addItem)
 
     def drawStuff(self, box):
         for i in self.buttons:
@@ -91,8 +103,6 @@ class Kilter(QWidget):
             y += 95
             x = 15
 
-
-
     def resizeEvent(self, event):
         self.width = self.size().width()
         self.moveStuff()
@@ -114,9 +124,22 @@ class Kilter(QWidget):
 
     def drawUI(self):
         if self.upBox:
-            self.returne.setVisible(True)
+            self.backButton.setVisible(True)
+            self.addBoxButton.move(70, 15)
+            self.addItemButton.move(155, 15)
         else:
-            self.returne.setVisible(False)
+            self.backButton.setVisible(False)
+            self.addBoxButton.move(15, 15)
+            self.addItemButton.move(100, 15)
+
+    def addBox(self):
+        self.addbox = BOX(self.currentBox)
+        self.addbox.show()
+
+    def addItem(self):
+        self.additem = ITEM(self.currentBox)
+        self.additem.show()
+
 
 
 

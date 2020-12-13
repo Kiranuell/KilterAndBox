@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import *
 con = sqlite3.connect("testbox.db")
 cur = con.cursor()
 
+
 def split(arr, size):
     arrs = []
     if len(arr) <= size:
@@ -18,6 +19,7 @@ def split(arr, size):
         arrs[-1].append(0)
     return arrs
 
+
 def join(arr):
     arrs = []
     for i in arr:
@@ -26,15 +28,17 @@ def join(arr):
                 arrs.append(j)
     return arrs
 
+
 class BOX(QWidget):
-    def __init__(self):
+    def __init__(self, currentBox):
         super().__init__()
         self.initUI()
+        self.currentBox = currentBox
 
     def initUI(self):
         # создание окна
         self.setGeometry(300, 300, 165, 105)
-        self.setWindowTitle('NameItem')
+        self.setWindowTitle('remakeBox')
 
         # кнопка отказа
         self.no = QPushButton(self)
@@ -61,38 +65,39 @@ class BOX(QWidget):
 
     def accept(self):
         a = self.name.text()
-        cur.execute("""INSERT INTO box(name)
-                          VALUES (?)""", (a,))
+        cur.execute("""INSERT INTO stuff(name, isBox, inBox)
+                          VALUES (?, 1, ?)""", (a, self.currentBox))
         con.commit()
         self.close()
 
+
 class ITEM(QWidget):
-    def __init__(self, nowbox, data=["предмет", 1], edit = False):
-        self.nowbox = nowbox
+    def __init__(self, currentBox, currentItem = None, data=["предмет", 1], edit=False):
+        self.currentItem = currentItem
+        self.currentBox = currentBox
         self.data = data
         self.edit = edit
         super().__init__()
         self.initUI()
 
-
     def initUI(self):
         # создание окна
         self.setGeometry(300, 300, 165, 105)
-        self.setWindowTitle('NameItem')
+        self.setWindowTitle('remakeItem')
 
         # кнопка отказа
-        self.no = QPushButton(self)
-        self.no.move(15, 60)
-        self.no.resize(60, 30)
-        self.no.setText("нет")
-        self.no.clicked.connect(self.reject)
+        self.rejectButton = QPushButton(self)
+        self.rejectButton.move(15, 60)
+        self.rejectButton.resize(60, 30)
+        self.rejectButton.setText("нет")
+        self.rejectButton.clicked.connect(self.reject)
 
         # кнопка согласия
-        self.yes = QPushButton(self)
-        self.yes.move(90, 60)
-        self.yes.resize(60, 30)
-        self.yes.setText("да")
-        self.yes.clicked.connect(self.accept)
+        self.acceptButton = QPushButton(self)
+        self.acceptButton.move(90, 60)
+        self.acceptButton.resize(60, 30)
+        self.acceptButton.setText("да")
+        self.acceptButton.clicked.connect(self.accept)
 
         # поле названия предмета
         self.name = QLineEdit(self)
@@ -102,10 +107,10 @@ class ITEM(QWidget):
         self.name.setText(str(self.data[0]))
 
         # поле количества предмета
-        self.amou = QLineEdit(self)
-        self.amou.move(110, 15)
-        self.amou.resize(40, 30)
-        self.amou.setText(str(self.data[1]))
+        self.amount = QLineEdit(self)
+        self.amount.move(110, 15)
+        self.amount.resize(40, 30)
+        self.amount.setText(str(self.data[1]))
 
         # значек "X"
         self.x = QLabel(self)
@@ -118,22 +123,16 @@ class ITEM(QWidget):
 
     def accept(self):
         if self.edit:
-            a = self.name.text()
-            b = int(self.amou.text())
-            c = int(self.nowbox)
-            cur.execute("""UPDATE item
-                           SET name = ?
-                           WHERE id = ?""", (a, c))
-            cur.execute("""UPDATE item
-                           SET amount = ?
-                           WHERE id = ?""", (b, c))
+            name = self.name.text()
+            amount = int(self.amount.text())
+            currentItem = int(self.currentItem)
+            cur.execute("""UPDATE stuff SET name = ?, amount = ? WHERE id = ?""", (name, amount, currentItem))
             con.commit()
             self.close()
         else:
-            a = self.name.text()
-            b = int(self.amou.text())
-            c = int(self.nowbox)
-            cur.execute("""INSERT INTO item(NAME, AMOUNT, BOX)
-                              VALUES (?, ?, ?)""", (a, b, c))
+            name = self.name.text()
+            amount = int(self.amount.text())
+            currentBox = self.currentBox
+            cur.execute("""INSERT INTO stuff(name, amount, inBox) VALUES (?, ?, ?)""", (name, amount, currentBox))
             con.commit()
             self.close()
