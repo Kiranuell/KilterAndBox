@@ -1,14 +1,26 @@
 import sys
-import sqlite3
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QImage, QPalette, QBrush
 from PyQt5.QtWidgets import *
 
-con = sqlite3.connect("testbox.db") # или :memory: чтобы сохранить в RAM
-cur = con.cursor()
+class MainWindow(QWidget):
+    def __init__(self):
+       QWidget.__init__(self)
+       self.setGeometry(100,100,300,200)
 
-boxExist = [21, 22, 23, 24, 25, 26, 27, 28]
-print((' ').join(list(map(str, boxExist))))
-trashStuff = cur.execute(f"SELECT id FROM stuff WHERE inBox NOT IN ({(', ').join(list(map(str, boxExist)))})")
-trashList = []
-for i in trashStuff:
-    trashList.append(*i)
-print(trashList)
+       oImage = QImage("BoxTexture.jpg")
+       sImage = oImage.scaled(QSize(300,200))                   # resize Image to widgets size
+       palette = QPalette()
+       palette.setBrush(10, QBrush(sImage))                     # 10 = Windowrole
+       self.setPalette(palette)
+
+       self.label = QLabel('Test', self)                        # test, if it's really backgroundimage
+       self.label.setGeometry(50,50,200,50)
+
+       self.show()
+
+if __name__ == "__main__":
+
+    app = QApplication(sys.argv)
+    oMainwindow = MainWindow()
+    sys.exit(app.exec_())

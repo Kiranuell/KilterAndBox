@@ -1,11 +1,12 @@
 import sys
 import sqlite3
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QImage, QPalette, QBrush
 from PyQt5.QtWidgets import *
 from Classes import split, join, BOX, ITEM, ACCEPTDELETE
 
 con = sqlite3.connect("testbox.db")
 cur = con.cursor()
-sizeBox = 50
 
 class Kilter(QWidget):
     def __init__(self):
@@ -16,12 +17,18 @@ class Kilter(QWidget):
         self.currentListStuff = []
         self.height = 500
         self.width = 500
+
+        oImage = QImage("BoxTexture.jpg")
+        sImage = oImage.scaled(QSize(300, 200))  # resize Image to widgets size
+        palette = QPalette()
+        palette.setBrush(10, QBrush(sImage))  # 10 = Windowrole
+        self.setPalette(palette)
+
         self.initUI()
 
     def initUI(self):
         self.setGeometry(200, 200, 500, 500)
         self.setWindowTitle('KilterAndBox')
-        self.setStyleSheet('background: rgb(255, 209, 115);')
         self.drawStuff(None)
 
         self.backButton = QPushButton(self)
