@@ -19,9 +19,9 @@ class Kilter(QWidget):
         self.width = 500
 
         oImage = QImage("BoxTexture.jpg")
-        sImage = oImage.scaled(QSize(300, 200))  # resize Image to widgets size
+        sImage = oImage.scaled(QSize(300, 200))
         palette = QPalette()
-        palette.setBrush(10, QBrush(sImage))  # 10 = Windowrole
+        palette.setBrush(10, QBrush(sImage))
         self.setPalette(palette)
 
         self.initUI()
@@ -93,6 +93,7 @@ class Kilter(QWidget):
                                 self.buttons[i][j].clicked.connect(self.clickBox)
                                 self.buttons[i][j].setStyleSheet('background: rgb(255, 171, 0);')
                             else:
+                                self.buttons[i][j].clicked.connect(self.clickItem)
                                 self.buttons[i][j].setStyleSheet('background: rgb(255, 215, 0);')
                         x += 95
                     y += 95
@@ -131,6 +132,7 @@ class Kilter(QWidget):
                                 self.buttons[i][j].clicked.connect(self.clickBox)
                                 self.buttons[i][j].setStyleSheet('background: rgb(255, 171, 0);')
                             else:
+                                self.buttons[i][j].clicked.connect(self.clickItem)
                                 self.buttons[i][j].setStyleSheet('background: rgb(255, 215, 0);')
                         x += 95
                     y += 95
@@ -172,6 +174,16 @@ class Kilter(QWidget):
             self.currentBox = self.idTable[hi][wi][0]
             self.drawUI()
             self.drawStuff(self.currentBox)
+
+    def clickItem(self):
+        sender = self.sender()
+        wi = (sender.pos().x() - 15) // 95
+        hi = (sender.pos().y() - 60) // 95
+        if self.deleteRadioButton.isChecked():
+            self.deleteStuff = ACCEPTDELETE(self.idTable[hi][wi][0], self.idTable[hi][wi][1])
+            self.deleteStuff.show()
+        else:
+            pass
 
     def back(self):
         self.setWindowTitle(self.upBox[-1][1])

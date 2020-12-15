@@ -5,9 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Kilterandbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/Kilterandbox.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testDataBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/testDataBase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testField2.py" beforeDir="false" afterPath="$PROJECT_DIR$/testField2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testbox.db" beforeDir="false" afterPath="$PROJECT_DIR$/testbox.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testfield.py" beforeDir="false" afterPath="$PROJECT_DIR$/testfield.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +44,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.testfield">
+  <component name="RunManager" selected="Python.Kilterandbox">
     <configuration name="Classes" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="KilterAndBox" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -154,9 +152,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Kilterandbox" />
         <item itemvalue="Python.testfield" />
         <item itemvalue="Python.testField2" />
-        <item itemvalue="Python.Kilterandbox" />
         <item itemvalue="Python.Classes" />
         <item itemvalue="Python.old" />
       </list>
@@ -208,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608063583161</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fon korobka">
+      <created>1608065683893</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1608065683893</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -230,7 +235,8 @@
     <MESSAGE value="Roma &lt;3" />
     <MESSAGE value="dobavlenie predmetov i korobok" />
     <MESSAGE value="udalenie korobok" />
-    <option name="LAST_COMMIT_MESSAGE" value="udalenie korobok" />
+    <MESSAGE value="fon korobka" />
+    <option name="LAST_COMMIT_MESSAGE" value="fon korobka" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
