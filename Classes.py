@@ -29,6 +29,44 @@ def join(arr):
     return arrs
 
 
+class ACCEPTDELETE(QWidget):
+    def __init__(self, currentStuff, name):
+        super().__init__()
+        self.currentStuff = currentStuff
+        self.stuffName = name
+        self.initUI()
+
+    def initUI(self):
+        # создание окна
+        self.setGeometry(300, 300, 165, 105)
+        self.setWindowTitle('deleteStuff')
+
+        self.text = QLabel(self)
+        self.text.setText(f"Удалить {self.stuffName}?")
+        self.text.move(15, 15)
+        self.text.resize(100, 30)
+
+        self.rejectButton = QPushButton(self)
+        self.rejectButton.move(15, 60)
+        self.rejectButton.resize(60, 30)
+        self.rejectButton.setText("нет")
+        self.rejectButton.clicked.connect(self.reject)
+
+        # кнопка согласия
+        self.acceptButton = QPushButton(self)
+        self.acceptButton.move(90, 60)
+        self.acceptButton.resize(60, 30)
+        self.acceptButton.setText("да")
+        self.acceptButton.clicked.connect(self.accept)
+
+    def reject(self):
+        self.close()
+
+    def accept(self):
+        cur.execute("DELETE FROM stuff WHERE ID == ?", (self.currentStuff,))
+        con.commit()
+        self.close()
+
 class BOX(QWidget):
     def __init__(self, currentBox):
         super().__init__()
@@ -72,7 +110,7 @@ class BOX(QWidget):
 
 
 class ITEM(QWidget):
-    def __init__(self, currentBox, currentItem = None, data=["предмет", 1], edit=False):
+    def __init__(self, currentBox, currentItem=None, data=["предмет", 1], edit=False):
         self.currentItem = currentItem
         self.currentBox = currentBox
         self.data = data
