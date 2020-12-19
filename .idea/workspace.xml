@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b37e6a2f-27d4-4bd2-8055-6d242bda617a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ButtonRight.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/KilterAndBox2.0.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Kilterandbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/Kilterandbox.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testDataBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/testDataBase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testField2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/KilterAndBox2.0.py" beforeDir="false" afterPath="$PROJECT_DIR$/KilterAndBox2.0.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testbox.db" beforeDir="false" afterPath="$PROJECT_DIR$/testbox.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testfield.py" beforeDir="false" afterPath="$PROJECT_DIR$/testfield.py" afterDir="false" />
     </list>
@@ -72,7 +66,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="KilterAndBox2.0" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="KilterAndBox2.0" type="PythonConfigurationType" factoryName="Python">
       <module name="KilterAndBox" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -158,7 +152,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.KilterAndBox2.0" />
         <item itemvalue="Python.testfield" />
         <item itemvalue="Python.3" />
         <item itemvalue="Python.testDataBase" />
@@ -226,7 +219,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608066550673</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Kilter 2.0 karkas">
+      <created>1608414903859</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1608414903859</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -250,7 +250,8 @@
     <MESSAGE value="udalenie korobok" />
     <MESSAGE value="fon korobka" />
     <MESSAGE value="udalenie predmetov" />
-    <option name="LAST_COMMIT_MESSAGE" value="udalenie predmetov" />
+    <MESSAGE value="Kilter 2.0 karkas" />
+    <option name="LAST_COMMIT_MESSAGE" value="Kilter 2.0 karkas" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1019,6 +1020,81 @@
           <url>file://$PROJECT_DIR$/ButtonRight.py</url>
           <line>24</line>
           <option name="timeStamp" value="407" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>200</line>
+          <option name="timeStamp" value="462" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>201</line>
+          <option name="timeStamp" value="463" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>203</line>
+          <option name="timeStamp" value="464" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>204</line>
+          <option name="timeStamp" value="465" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>205</line>
+          <option name="timeStamp" value="466" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>206</line>
+          <option name="timeStamp" value="467" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>210</line>
+          <option name="timeStamp" value="470" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>209</line>
+          <option name="timeStamp" value="471" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>211</line>
+          <option name="timeStamp" value="472" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>212</line>
+          <option name="timeStamp" value="473" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>207</line>
+          <option name="timeStamp" value="475" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>208</line>
+          <option name="timeStamp" value="476" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>213</line>
+          <option name="timeStamp" value="477" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>221</line>
+          <option name="timeStamp" value="479" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/KilterAndBox2.0.py</url>
+          <line>214</line>
+          <option name="timeStamp" value="480" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

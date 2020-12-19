@@ -10,6 +10,7 @@ for i in range(10):
         button = Qt.QPushButton('{}x{}'.format(i, j))
         layout.addWidget(button, i, j)
 
+
 w = Qt.QWidget()
 w.setLayout(layout)
 

@@ -1,16 +1,20 @@
 import sys
 import sqlite3
+from PyQt5 import Qt
+
 from PyQt5 import Qt, QtWidgets, QtCore
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QImage, QPalette, QBrush
 from PyQt5.QtWidgets import QScrollArea
 from PyQt5.QtWidgets import *
-from Classes import split, join, BOX, ITEM, ACCEPTDELETE, SIGNAL
+from Classes import split, join, BOX, ITEM, ACCEPTDELETE, SIGNAL, PushButtonRight
 from PyQt5.QtWidgets import (QWidget, QSlider, QLineEdit, QLabel, QPushButton, QScrollArea,QApplication,
                              QHBoxLayout, QVBoxLayout, QMainWindow)
-from PyQt5.QtCore import Qt, QSize, QRect
+from PyQt5.QtCore import  QSize, QRect
 from PyQt5 import QtWidgets, uic
 
+con = sqlite3.connect("testbox.db")
+cur = con.cursor()
 
 distanceBetweenButtons = 10
 buttonsHeight = 30
@@ -22,6 +26,10 @@ cur = con.cursor()
 class KilterAndBox(QWidget):
     def __init__(self):
         super().__init__()
+        self.buttons = []
+        self.upBox = []
+        self.currentBox = None
+        self.currentListStuff = []
         oImage = QImage("BoxTexture.jpg")
         sImage = oImage.scaled(QSize(300, 200))
         palette = QPalette()
@@ -95,14 +103,17 @@ class KilterAndBox(QWidget):
         self.openDeleteButtonGroup = QButtonGroup()
         self.openDeleteButtonGroup.addButton(self.openRadioButton)
         self.openDeleteButtonGroup.addButton(self.deleteRadioButton)
+        self.openRadioButton.toggle()
 
         self.singleMultipleButtonGroup = QButtonGroup()
         self.singleMultipleButtonGroup.addButton(self.singleSelectionRadioButton)
         self.singleMultipleButtonGroup.addButton(self.multipleSelectionRadioButton)
+        self.singleSelectionRadioButton.toggle()
 
         self.executePlanDeleteButtonGroup = QButtonGroup()
         self.executePlanDeleteButtonGroup.addButton(self.executeRadioButton)
         self.executePlanDeleteButtonGroup.addButton(self.planRadioButton)
+        self.executeRadioButton.toggle()
 
         self.findButton = QPushButton(self)
         self.findButton.move(distanceBetweenButtons, buttonsHeight * 2 + distanceBetweenButtons * 3)
@@ -122,6 +133,18 @@ class KilterAndBox(QWidget):
         self.noteButton.setText("заметки")
         self.noteButton.setStyleSheet('background: rgb(229, 184, 135);;')
 
+        self.layout = Qt.QGridLayout()
+        # for i in range(10):
+        #     for j in range(10):
+        #         button = PushButtonRight('{}x{}'.format(i, j))
+        #         button.setStyleSheet('background: rgb(229, 184, 135);;')
+        #         layout.addWidget(button, i, j)
+
+        widget = Qt.QWidget()
+        widget.setLayout(self.layout)
+
+        self.drawStuff(None)
+
         self.centralwidget = QtWidgets.QWidget(self)
         self.centralwidget.resize(self.size().width() - distanceBetweenButtons * 2, self.size().height() - (
                                                              distanceBetweenButtons * 6 + buttonsHeight * 4))
@@ -133,17 +156,8 @@ class KilterAndBox(QWidget):
                                                              distanceBetweenButtons * 6 + buttonsHeight * 4)))
         self.scrollArea.setStyleSheet('background: rgb(240, 240, 240);;')
 
+        self.scrollArea.setWidget(widget)
 
-        self.Button = QtWidgets.QPushButton()
-        self.Button.resize(80, 80)
-        self.Button.setGeometry(QtCore.QRect(10, 10, 80, 80))
-        self.scrollArea.setWidget(self.Button)
-
-
-
-        # self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        # self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 100000, 100000))
-        # self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
 
 
@@ -156,6 +170,58 @@ class KilterAndBox(QWidget):
         self.scrollArea.setGeometry(QtCore.QRect(0, 0, self.size().width() - distanceBetweenButtons * 2,
                                                  self.size().height() - (
                                                          distanceBetweenButtons * 6 + buttonsHeight * 4)))
+
+    def drawStuff(self, box):
+        for i in self.buttons:
+            for j in i:
+                if j:
+                    j.deleteLater()
+
+        if self.currentBox == None and self.windowTitle() == "мусорка" or len(self.upBox) >= 2 and self.upBox[1] == [
+            None, "мусорка"]:
+            self.isInTrash = True
+        else:
+            self.isInTrash = False
+
+        if self.windowTitle() == "мусорка":
+            boxId = cur.execute("SELECT id FROM stuff WHERE isBox IS 1")
+            boxExist = []
+            for i in boxId:
+                boxExist.append(*i)
+            stuff = cur.execute(f"SELECT id, name, isBox FROM stuff WHERE inBox NOT IN ({(', ').join(list(map(str, boxExist)))})")
+            self.currentListStuff = []
+            for i in stuff:
+                self.currentListStuff.append(i)
+        else:
+            stuff = cur.execute("SELECT id, name, isBox FROM stuff WHERE inBox IS ?", (box,))
+            self.currentListStuff = []
+            for i in stuff:
+                self.currentListStuff.append(i)
+
+        if not self.upBox:
+            self.currentListStuff.append([None, "мусорка", 1])
+
+        if self.currentListStuff:
+            self.widthItem = (self.size().width() - 15) // 95
+            if self.widthItem > len(self.currentListStuff):
+                self.widthItem = len(self.currentListStuff)
+            self.highItem = int((len(self.currentListStuff) / self.widthItem) + 0.99999)
+            self.idTable = split(self.currentListStuff, self.widthItem)
+            self.buttons = [[None] * self.widthItem for _ in range(self.highItem)]
+            for i in range(self.highItem):
+                for j in range(self.widthItem):
+                    if self.idTable[i][j] != 0:
+                        button = QPushButton(self.idTable[i][j][1])
+                        button.setFixedSize(80, 80)
+                        if self.idTable[i][j][1] == "мусорка" and self.idTable[i][j][0] is None:
+                            button.setStyleSheet('background: rgb(191, 191, 191);;')
+                        elif self.idTable[i][j][2]:
+                            button.setStyleSheet('background: rgb(229, 184, 135);;')
+                        else:
+                            button.setStyleSheet('background: rgb(245, 222, 179);')
+                        self.layout.addWidget(button, i, j)
+        else:
+            self.buttons = []
 
 
 
