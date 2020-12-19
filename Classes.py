@@ -1,10 +1,32 @@
 import sys
 import sqlite3
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5 import Qt, QtWidgets, QtCore
 
 con = sqlite3.connect("testbox.db")
 cur = con.cursor()
 
+class PushButtonRight(QtWidgets.QPushButton):
+    left_click = QtCore.pyqtSignal()
+    right_click = QtCore.pyqtSignal()
+
+    def __init__(self, string):
+        super().__init__(string)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.Qt.LeftButton:
+            self.left_click.emit()
+            print('left click')
+        elif event.button() == Qt.Qt.RightButton:
+            self.right_click.emit()
+            print('right click')
+
+        QtWidgets.QPushButton.mousePressEvent(self, event)
+
+class SIGNAL(QObject):
+    # создаем свой сигнал
+    closeSignal = pyqtSignal()
 
 def split(arr, size):
     arrs = []
@@ -19,7 +41,6 @@ def split(arr, size):
         arrs[-1].append(0)
     return arrs
 
-
 def join(arr):
     arrs = []
     for i in arr:
@@ -30,10 +51,12 @@ def join(arr):
 
 
 class ACCEPTDELETE(QWidget):
-    def __init__(self, currentStuff, name):
+    closeSignal = pyqtSignal(bool)
+    def __init__(self, currentStuff = 0, name = 0, isInTrash = 0):
         super().__init__()
         self.currentStuff = currentStuff
         self.stuffName = name
+        self.isInTrash = isInTrash
         self.initUI()
 
     def initUI(self):
@@ -63,9 +86,18 @@ class ACCEPTDELETE(QWidget):
         self.close()
 
     def accept(self):
-        cur.execute("DELETE FROM stuff WHERE ID == ?", (self.currentStuff,))
-        con.commit()
-        self.close()
+        if self.isInTrash:
+            cur.execute("DELETE FROM stuff WHERE id == ?", (self.currentStuff,))
+            con.commit()
+            self.closeSignal.emit(True)
+            self.close()
+        else:
+            cur.execute("UPDATE stuff SET inBox = 0 WHERE ID == ?", (self.currentStuff,))
+            con.commit()
+            self.closeSignal.emit(True)
+            self.close()
+
+
 
 class BOX(QWidget):
     def __init__(self, currentBox):
@@ -78,6 +110,7 @@ class BOX(QWidget):
         self.setGeometry(300, 300, 165, 105)
         self.setWindowTitle('remakeBox')
 
+        self.sig = SIGNAL()
         # кнопка отказа
         self.no = QPushButton(self)
         self.no.move(15, 60)
@@ -106,7 +139,10 @@ class BOX(QWidget):
         cur.execute("""INSERT INTO stuff(name, isBox, inBox)
                           VALUES (?, 1, ?)""", (a, self.currentBox))
         con.commit()
+        self.sig.closeSignal.emit()
         self.close()
+
+
 
 
 class ITEM(QWidget):
@@ -123,6 +159,7 @@ class ITEM(QWidget):
         self.setGeometry(300, 300, 165, 105)
         self.setWindowTitle('remakeItem')
 
+        self.sig = SIGNAL()
         # кнопка отказа
         self.rejectButton = QPushButton(self)
         self.rejectButton.move(15, 60)
@@ -166,6 +203,7 @@ class ITEM(QWidget):
             currentItem = int(self.currentItem)
             cur.execute("""UPDATE stuff SET name = ?, amount = ? WHERE id = ?""", (name, amount, currentItem))
             con.commit()
+            self.sig.closeSignal.emit()
             self.close()
         else:
             name = self.name.text()
@@ -173,4 +211,5 @@ class ITEM(QWidget):
             currentBox = self.currentBox
             cur.execute("""INSERT INTO stuff(name, amount, inBox) VALUES (?, ?, ?)""", (name, amount, currentBox))
             con.commit()
+            self.sig.closeSignal.emit()
             self.close()
