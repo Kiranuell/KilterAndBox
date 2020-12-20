@@ -45,7 +45,6 @@ def join(arr):
     return arrs
 
 class ACCEPTDELETE(QWidget):
-    closeSignal = pyqtSignal(bool)
     def __init__(self, currentStuff = 0, name = 0, isInTrash = 0):
         super().__init__()
         self.currentStuff = currentStuff
@@ -83,12 +82,10 @@ class ACCEPTDELETE(QWidget):
         if self.isInTrash:
             cur.execute("DELETE FROM stuff WHERE id == ?", (self.currentStuff,))
             con.commit()
-            self.closeSignal.emit(True)
             self.close()
         else:
             cur.execute("UPDATE stuff SET inBox = 0 WHERE ID == ?", (self.currentStuff,))
             con.commit()
-            self.closeSignal.emit(True)
             self.close()
 
 class BOX(QWidget):
