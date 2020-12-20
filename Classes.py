@@ -7,6 +7,7 @@ from PyQt5 import Qt, QtWidgets, QtCore
 con = sqlite3.connect("testbox.db")
 cur = con.cursor()
 
+
 class PushButtonRight(QtWidgets.QPushButton):
     left_click = QtCore.pyqtSignal()
     right_click = QtCore.pyqtSignal()
@@ -17,16 +18,10 @@ class PushButtonRight(QtWidgets.QPushButton):
     def mousePressEvent(self, event):
         if event.button() == Qt.Qt.LeftButton:
             self.left_click.emit()
-            print('left click')
         elif event.button() == Qt.Qt.RightButton:
             self.right_click.emit()
-            print('right click')
 
         QtWidgets.QPushButton.mousePressEvent(self, event)
-
-class SIGNAL(QObject):
-    # создаем свой сигнал
-    closeSignal = pyqtSignal()
 
 def split(arr, size):
     arrs = []
@@ -48,7 +43,6 @@ def join(arr):
             if j:
                 arrs.append(j)
     return arrs
-
 
 class ACCEPTDELETE(QWidget):
     closeSignal = pyqtSignal(bool)
@@ -97,9 +91,8 @@ class ACCEPTDELETE(QWidget):
             self.closeSignal.emit(True)
             self.close()
 
-
-
 class BOX(QWidget):
+    rel = QtCore.pyqtSignal()
     def __init__(self, currentBox):
         super().__init__()
         self.initUI()
@@ -110,8 +103,6 @@ class BOX(QWidget):
         self.setGeometry(300, 300, 165, 105)
         self.setWindowTitle('remakeBox')
 
-        self.sig = SIGNAL()
-        # кнопка отказа
         self.no = QPushButton(self)
         self.no.move(15, 60)
         self.no.resize(60, 30)
@@ -139,7 +130,7 @@ class BOX(QWidget):
         cur.execute("""INSERT INTO stuff(name, isBox, inBox)
                           VALUES (?, 1, ?)""", (a, self.currentBox))
         con.commit()
-        self.sig.closeSignal.emit()
+        self.rel.emit()
         self.close()
 
 
