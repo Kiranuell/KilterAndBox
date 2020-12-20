@@ -92,11 +92,13 @@ class ACCEPTDELETE(QWidget):
             self.close()
 
 class BOX(QWidget):
-    rel = QtCore.pyqtSignal()
-    def __init__(self, currentBox):
+    def __init__(self, inBox, currentBox=None, name="коробка", edit=False):
         super().__init__()
-        self.initUI()
+        self.inBox = inBox
         self.currentBox = currentBox
+        self.name = name
+        self.edit = edit
+        self.initUI()
 
     def initUI(self):
         # создание окна
@@ -117,53 +119,41 @@ class BOX(QWidget):
         self.yes.clicked.connect(self.accept)
 
         # поле названия коробки
-        self.name = QLineEdit(self)
-        self.name.move(15, 15)
-        self.name.resize(135, 30)
-        self.name.setText("коробка")
+        self.nameLineEdit = QLineEdit(self)
+        self.nameLineEdit.move(15, 15)
+        self.nameLineEdit.resize(135, 30)
+        self.nameLineEdit.setText(self.name)
 
     def reject(self):
         self.close()
 
     def accept(self):
-        a = self.name.text()
-        cur.execute("""INSERT INTO stuff(name, isBox, inBox)
-                          VALUES (?, 1, ?)""", (a, self.currentBox))
-        con.commit()
-        self.rel.emit()
-        self.close()
-
-
+        name = self.nameLineEdit.text()
+        if self.edit:
+            cur.execute("""UPDATE stuff SET name = ? WHERE id = ?""", (name, self.currentBox))
+            con.commit()
+            self.close()
+        else:
+            cur.execute("""INSERT INTO stuff(name, isBox, inBox)
+                                      VALUES (?, 1, ?)""", (name, self.inBox))
+            con.commit()
+            self.close()
 
 
 class ITEM(QWidget):
-    def __init__(self, currentBox, currentItem=None, data=["предмет", 1], edit=False):
+    def __init__(self, currentBox, look, currentItem=None, data=["предмет", 1], edit=False):
+        super().__init__()
         self.currentItem = currentItem
         self.currentBox = currentBox
         self.data = data
         self.edit = edit
-        super().__init__()
+        self.look = look
         self.initUI()
 
     def initUI(self):
         # создание окна
         self.setGeometry(300, 300, 165, 105)
         self.setWindowTitle('remakeItem')
-
-        self.sig = SIGNAL()
-        # кнопка отказа
-        self.rejectButton = QPushButton(self)
-        self.rejectButton.move(15, 60)
-        self.rejectButton.resize(60, 30)
-        self.rejectButton.setText("нет")
-        self.rejectButton.clicked.connect(self.reject)
-
-        # кнопка согласия
-        self.acceptButton = QPushButton(self)
-        self.acceptButton.move(90, 60)
-        self.acceptButton.resize(60, 30)
-        self.acceptButton.setText("да")
-        self.acceptButton.clicked.connect(self.accept)
 
         # поле названия предмета
         self.name = QLineEdit(self)
@@ -182,25 +172,38 @@ class ITEM(QWidget):
         self.x = QLabel(self)
         self.x.setText("X")
         self.x.move(100, 15)
-        self.x.resize(30, 30)
+        self.x.resize(15, 30)
+
+        if self.look:
+            self.name.setReadOnly(True)
+            self.amount.setReadOnly(True)
+            self.setGeometry(300, 300, 165, 65)
+        else:
+            self.rejectButton = QPushButton(self)
+            self.rejectButton.move(15, 60)
+            self.rejectButton.resize(60, 30)
+            self.rejectButton.setText("нет")
+            self.rejectButton.clicked.connect(self.reject)
+
+            self.acceptButton = QPushButton(self)
+            self.acceptButton.move(90, 60)
+            self.acceptButton.resize(60, 30)
+            self.acceptButton.setText("да")
+            self.acceptButton.clicked.connect(self.accept)
 
     def reject(self):
         self.close()
 
     def accept(self):
+        name = self.name.text()
+        amount = int(self.amount.text())
         if self.edit:
-            name = self.name.text()
-            amount = int(self.amount.text())
             currentItem = int(self.currentItem)
             cur.execute("""UPDATE stuff SET name = ?, amount = ? WHERE id = ?""", (name, amount, currentItem))
             con.commit()
-            self.sig.closeSignal.emit()
             self.close()
         else:
-            name = self.name.text()
-            amount = int(self.amount.text())
             currentBox = self.currentBox
             cur.execute("""INSERT INTO stuff(name, amount, inBox) VALUES (?, ?, ?)""", (name, amount, currentBox))
             con.commit()
-            self.sig.closeSignal.emit()
             self.close()
