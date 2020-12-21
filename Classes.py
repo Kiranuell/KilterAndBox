@@ -84,7 +84,7 @@ class ACCEPTDELETE(QWidget):
             con.commit()
             self.close()
         else:
-            cur.execute("UPDATE stuff SET inBox = 0 WHERE ID == ?", (self.currentStuff,))
+            cur.execute("UPDATE stuff SET inBox = -1 WHERE ID == ?", (self.currentStuff,))
             con.commit()
             self.close()
 
