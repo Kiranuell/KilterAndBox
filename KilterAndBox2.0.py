@@ -5,9 +5,7 @@ from PyQt5.QtGui import QImage, QPalette, QBrush
 from PyQt5.QtWidgets import QWidget, QLineEdit, QPushButton, QApplication, QRadioButton, QButtonGroup, QSpacerItem
 from PyQt5.QtCore import QSize, QRect
 from PyQt5 import QtWidgets, QtCore
-from Classes import BOX, ITEM, join, split, PushButtonRight, ACCEPTDELETE
-
-
+from Classes import BOX, ITEM, split, PushButtonRight, ACCEPTDELETE
 
 con = sqlite3.connect("testbox.db")
 cur = con.cursor()
@@ -18,6 +16,7 @@ buttonsWidth = 80
 
 con = sqlite3.connect("testbox.db")
 cur = con.cursor()
+
 
 class KilterAndBox(QWidget):
     def __init__(self):
@@ -35,7 +34,7 @@ class KilterAndBox(QWidget):
         self.setPalette(palette)
 
         self.initUI()
-        self.drawStuff(0)
+        self.drawStuff()
 
     def initUI(self):
         self.setGeometry(200, 200, 500, 500)
@@ -49,8 +48,8 @@ class KilterAndBox(QWidget):
         self.fullBackButton.resize(buttonsWidth, buttonsHeight)
         self.fullBackButton.setText("на главную")
         self.fullBackButton.clicked.connect(self.fullBack)
-        self.fullBackButton.setStyleSheet('background: rgb(245, 222, 179);') # предмет
-        self.fullBackButton.setStyleSheet('background: rgb(229, 184, 135);') # кнопка или коробка
+        self.fullBackButton.setStyleSheet('background: rgb(245, 222, 179);')  # предмет
+        self.fullBackButton.setStyleSheet('background: rgb(229, 184, 135);')  # кнопка или коробка
 
         self.backButton = QPushButton(self)
         self.backButton.setVisible(False)
@@ -92,7 +91,7 @@ class KilterAndBox(QWidget):
 
         self.multipleSelectionRadioButton = QRadioButton(self)
         self.multipleSelectionRadioButton.move(buttonsWidth * 2 + distanceBetweenButtons * 3,
-                                    buttonsHeight + distanceBetweenButtons * 2)
+                                               buttonsHeight + distanceBetweenButtons * 2)
         self.multipleSelectionRadioButton.resize(buttonsWidth, buttonsHeight)
         self.multipleSelectionRadioButton.setText("множество")
 
@@ -103,7 +102,7 @@ class KilterAndBox(QWidget):
 
         self.planRadioButton = QRadioButton(self)
         self.planRadioButton.move(buttonsWidth * 3 + distanceBetweenButtons * 4,
-                                    buttonsHeight + distanceBetweenButtons * 2)
+                                  buttonsHeight + distanceBetweenButtons * 2)
         self.planRadioButton.resize(buttonsWidth, buttonsHeight)
         self.planRadioButton.setText("записать")
 
@@ -156,16 +155,20 @@ class KilterAndBox(QWidget):
         self.but.resize(50, 50)
 
         self.Widget = QWidget(self)
-        self.Widget.setGeometry(distanceBetweenButtons, distanceBetweenButtons * 4 + buttonsHeight * 3, self.size().width() - distanceBetweenButtons * 2, self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
+        self.Widget.setGeometry(distanceBetweenButtons, distanceBetweenButtons * 4 + buttonsHeight * 3,
+                                self.size().width() - distanceBetweenButtons * 2,
+                                self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
         self.Widget.setStyleSheet('background: rgb(240, 240, 240);;')
 
         self.WidgetScroll = QWidget(self)
         self.WidgetScroll.setLayout(self.Glayout)
-        self.WidgetScroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2 - 10, self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
+        self.WidgetScroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2 - 10,
+                                      self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
 
         self.Scroll = Qt.QScrollArea(self.Widget)
         self.Scroll.setWidget(self.WidgetScroll)
-        self.Scroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2, self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
+        self.Scroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2,
+                                self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
         self.Scroll.setStyleSheet('background: rgb(240, 240, 240);;')
 
     def resizeEvent(self, event):
@@ -186,7 +189,7 @@ class KilterAndBox(QWidget):
                                           self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
         self.moveStuff()
 
-    def drawStuff(self, box):
+    def drawStuff(self):
         while self.Glayout.count():
             child = self.Glayout.takeAt(0)
             if child.widget():
@@ -203,12 +206,13 @@ class KilterAndBox(QWidget):
             boxExist = [0]
             for i in boxId:
                 boxExist.append(*i)
-            stuff = cur.execute(f"SELECT id, name, isBox, amount, inBox FROM stuff WHERE inBox NOT IN ({(', ').join(list(map(str, boxExist)))})")
+            stuff = cur.execute(
+                f"SELECT id, name, isBox, amount, inBox FROM stuff WHERE inBox NOT IN ({(', ').join(list(map(str, boxExist)))})")
             self.currentListStuff = []
             for i in stuff:
                 self.currentListStuff.append(i)
         else:
-            stuff = cur.execute("SELECT id, name, isBox, amount, inBox FROM stuff WHERE inBox IS ?", (box,))
+            stuff = cur.execute("SELECT id, name, isBox, amount, inBox FROM stuff WHERE inBox IS ?", (self.currentBox,))
             self.currentListStuff = []
             for i in stuff:
                 self.currentListStuff.append(i)
@@ -284,7 +288,6 @@ class KilterAndBox(QWidget):
             spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
             self.Glayout.addItem(spacerItem1, self.highItem, 0, 1, 1)
 
-
     def leftClickBox(self):
         sender = self.sender()
         index = self.Glayout.indexOf(sender)
@@ -304,15 +307,17 @@ class KilterAndBox(QWidget):
                 self.setWindowTitle(self.idTable[pos[0]][pos[1]][1])
                 self.currentBox = self.idTable[pos[0]][pos[1]][0]
                 self.drawUI()
-                self.drawStuff(self.currentBox)
+                self.drawStuff()
                 hight = 80 * self.highItem + 10 * (self.highItem + 1)
                 self.WidgetScroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2,
                                               hight)
                 if hight < self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4):
                     self.WidgetScroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2 - 19,
-                                                  self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
+                                                  self.size().height() - (
+                                                          distanceBetweenButtons * 6 + buttonsHeight * 4))
             else:
-                self.delete = ACCEPTDELETE(self.idTable[pos[0]][pos[1]][0], self.idTable[pos[0]][pos[1]][1], self.isInTrash)
+                self.delete = ACCEPTDELETE(self.idTable[pos[0]][pos[1]][0], self.idTable[pos[0]][pos[1]][1],
+                                           self.isInTrash)
                 self.delete.show()
 
     def leftClickItem(self):
@@ -327,10 +332,12 @@ class KilterAndBox(QWidget):
             self.findFlag = False
         else:
             if self.openDeleteButtonGroup.checkedId() == -2:
-                self.addbox = ITEM(self.currentBox, True, self.idTable[pos[0]][pos[1]][0], [self.idTable[pos[0]][pos[1]][1], self.idTable[pos[0]][pos[1]][3]])
+                self.addbox = ITEM(self.currentBox, True, self.idTable[pos[0]][pos[1]][0],
+                                   [self.idTable[pos[0]][pos[1]][1], self.idTable[pos[0]][pos[1]][3]])
                 self.addbox.show()
             else:
-                self.delete = ACCEPTDELETE(self.idTable[pos[0]][pos[1]][0], self.idTable[pos[0]][pos[1]][1], self.isInTrash)
+                self.delete = ACCEPTDELETE(self.idTable[pos[0]][pos[1]][0], self.idTable[pos[0]][pos[1]][1],
+                                           self.isInTrash)
                 self.delete.show()
 
     def rightClickBox(self):
@@ -344,7 +351,8 @@ class KilterAndBox(QWidget):
         sender = self.sender()
         index = self.Glayout.indexOf(sender)
         pos = self.Glayout.getItemPosition(index)
-        self.addbox = ITEM(self.currentBox, False, self.idTable[pos[0]][pos[1]][0], [self.idTable[pos[0]][pos[1]][1], self.idTable[pos[0]][pos[1]][3]], True)
+        self.addbox = ITEM(self.currentBox, False, self.idTable[pos[0]][pos[1]][0],
+                           [self.idTable[pos[0]][pos[1]][1], self.idTable[pos[0]][pos[1]][3]], True)
         self.addbox.show()
 
     def drawUI(self):
@@ -353,7 +361,7 @@ class KilterAndBox(QWidget):
             self.fullBackButton.setVisible(True)
             self.addBoxButton.move(buttonsWidth + distanceBetweenButtons * 2, distanceBetweenButtons)
             self.addItemButton.move(buttonsWidth + distanceBetweenButtons * 2,
-                                        buttonsHeight + distanceBetweenButtons * 2)
+                                    buttonsHeight + distanceBetweenButtons * 2)
             self.openRadioButton.move(buttonsWidth * 2 + distanceBetweenButtons * 3, distanceBetweenButtons)
             self.deleteRadioButton.move(buttonsWidth * 2 + distanceBetweenButtons * 3,
                                         buttonsHeight + distanceBetweenButtons * 2)
@@ -382,7 +390,7 @@ class KilterAndBox(QWidget):
         self.setWindowTitle(self.upBox[-1][1])
         self.currentBox = self.upBox[-1][0]
         self.upBox.pop()
-        self.drawStuff(self.currentBox)
+        self.drawStuff()
         self.drawUI()
         hight = 80 * self.highItem + 10 * (self.highItem + 1)
         self.WidgetScroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2,
@@ -396,7 +404,7 @@ class KilterAndBox(QWidget):
         self.setWindowTitle("KilterAndBox")
         self.currentBox = 0
         self.upBox.clear()
-        self.drawStuff(self.currentBox)
+        self.drawStuff()
         self.drawUI()
         hight = 80 * self.highItem + 10 * (self.highItem + 1)
         self.WidgetScroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2,
@@ -412,9 +420,6 @@ class KilterAndBox(QWidget):
     def addItem(self):
         self.additem = ITEM(self.currentBox, False)
         self.additem.show()
-
-    def reload(self):
-        self.drawStuff(self.currentBox)
 
     def findStuff(self):
         while self.Glayout.count():
@@ -471,7 +476,7 @@ class KilterAndBox(QWidget):
     def dontFind(self):
         self.cancel.setVisible(False)
         self.findButton.setVisible(True)
-        self.drawStuff(self.currentBox)
+        self.drawStuff()
         self.findFlag = False
 
     def findPath(self, inBox):
@@ -483,7 +488,7 @@ class KilterAndBox(QWidget):
             self.setWindowTitle(data[1])
             needBox = data[2]
             while needBox != 0:
-                box = cur.execute("SELECT id, name, inBox FROM stuff Where id = ?", (needBox, ))
+                box = cur.execute("SELECT id, name, inBox FROM stuff Where id = ?", (needBox,))
                 data = box.fetchone()
                 way.append([data[0], data[1]])
                 needBox = data[2]
@@ -492,25 +497,20 @@ class KilterAndBox(QWidget):
             way.reverse()
             self.upBox = way
             print(self.upBox)
-            self.drawStuff(self.currentBox)
+            self.drawStuff()
             self.drawUI()
         else:
             self.setWindowTitle('KilterAndBox')
             self.upBox = []
-            self.drawStuff(self.currentBox)
+            self.drawStuff()
             self.drawUI()
 
-
-
-
-
-
-
+    def keyPressEvent(self, event):
+        self.drawStuff()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = KilterAndBox()
-    # ex.showMaximized()
     ex.show()
     sys.exit(app.exec())

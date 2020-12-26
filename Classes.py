@@ -23,6 +23,7 @@ class PushButtonRight(QtWidgets.QPushButton):
 
         QtWidgets.QPushButton.mousePressEvent(self, event)
 
+
 def split(arr, size):
     arrs = []
     if len(arr) <= size:
@@ -36,16 +37,9 @@ def split(arr, size):
         arrs[-1].append(0)
     return arrs
 
-def join(arr):
-    arrs = []
-    for i in arr:
-        for j in i:
-            if j:
-                arrs.append(j)
-    return arrs
 
 class ACCEPTDELETE(QWidget):
-    def __init__(self, currentStuff = 0, name = 0, isInTrash = 0):
+    def __init__(self, currentStuff=0, name=0, isInTrash=0):
         super().__init__()
         self.currentStuff = currentStuff
         self.stuffName = name
@@ -87,6 +81,7 @@ class ACCEPTDELETE(QWidget):
             cur.execute("UPDATE stuff SET inBox = -1 WHERE ID == ?", (self.currentStuff,))
             con.commit()
             self.close()
+
 
 class BOX(QWidget):
     def __init__(self, inBox, currentBox=None, name="коробка", edit=False):
