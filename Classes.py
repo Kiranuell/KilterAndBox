@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5 import Qt, QtWidgets, QtCore
 
-con = sqlite3.connect("testbox.db")
+con = sqlite3.connect("KilterAndBox.db")
 cur = con.cursor()
 
 

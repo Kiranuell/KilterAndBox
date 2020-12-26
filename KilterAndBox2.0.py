@@ -7,7 +7,7 @@ from PyQt5.QtCore import QSize, QRect
 from PyQt5 import QtWidgets, QtCore
 from Classes import BOX, ITEM, split, PushButtonRight, ACCEPTDELETE
 
-con = sqlite3.connect("testbox.db")
+con = sqlite3.connect("KilterAndBox.db")
 cur = con.cursor()
 
 distanceBetweenButtons = 10
