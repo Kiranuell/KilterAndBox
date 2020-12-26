@@ -38,8 +38,8 @@ class KilterAndBox(QWidget):
 
     def initUI(self):
         self.setGeometry(200, 200, 500, 500)
-        self.setMinimumWidth(500)
-        self.setMinimumHeight(295)
+        self.setMinimumWidth(260)
+        self.setMinimumHeight(245)
         self.setWindowTitle('KilterAndBox')
 
         self.fullBackButton = QPushButton(self)
@@ -84,42 +84,10 @@ class KilterAndBox(QWidget):
         self.deleteRadioButton.resize(buttonsWidth, buttonsHeight)
         self.deleteRadioButton.setText("удалить")
 
-        self.singleSelectionRadioButton = QRadioButton(self)
-        self.singleSelectionRadioButton.move(buttonsWidth * 2 + distanceBetweenButtons * 3, distanceBetweenButtons)
-        self.singleSelectionRadioButton.resize(buttonsWidth, buttonsHeight)
-        self.singleSelectionRadioButton.setText("единица")
-
-        self.multipleSelectionRadioButton = QRadioButton(self)
-        self.multipleSelectionRadioButton.move(buttonsWidth * 2 + distanceBetweenButtons * 3,
-                                               buttonsHeight + distanceBetweenButtons * 2)
-        self.multipleSelectionRadioButton.resize(buttonsWidth, buttonsHeight)
-        self.multipleSelectionRadioButton.setText("множество")
-
-        self.executeRadioButton = QRadioButton(self)
-        self.executeRadioButton.move(buttonsWidth * 3 + distanceBetweenButtons * 4, distanceBetweenButtons)
-        self.executeRadioButton.resize(buttonsWidth, buttonsHeight)
-        self.executeRadioButton.setText("выполнить")
-
-        self.planRadioButton = QRadioButton(self)
-        self.planRadioButton.move(buttonsWidth * 3 + distanceBetweenButtons * 4,
-                                  buttonsHeight + distanceBetweenButtons * 2)
-        self.planRadioButton.resize(buttonsWidth, buttonsHeight)
-        self.planRadioButton.setText("записать")
-
         self.openDeleteButtonGroup = QButtonGroup()
         self.openDeleteButtonGroup.addButton(self.openRadioButton)
         self.openDeleteButtonGroup.addButton(self.deleteRadioButton)
         self.openRadioButton.toggle()
-
-        self.singleMultipleButtonGroup = QButtonGroup()
-        self.singleMultipleButtonGroup.addButton(self.singleSelectionRadioButton)
-        self.singleMultipleButtonGroup.addButton(self.multipleSelectionRadioButton)
-        self.singleSelectionRadioButton.toggle()
-
-        self.executePlanDeleteButtonGroup = QButtonGroup()
-        self.executePlanDeleteButtonGroup.addButton(self.executeRadioButton)
-        self.executePlanDeleteButtonGroup.addButton(self.planRadioButton)
-        self.executeRadioButton.toggle()
 
         self.cancel = QPushButton(self)
         self.cancel.setVisible(False)
@@ -141,12 +109,6 @@ class KilterAndBox(QWidget):
                                buttonsHeight * 2 + distanceBetweenButtons * 3)
         self.findLineEdit.resize(self.size().width() - (buttonsWidth * 1 + distanceBetweenButtons * 3), buttonsHeight)
         self.findLineEdit.setStyleSheet('background: rgb(240, 240, 240);;')
-
-        self.noteButton = QPushButton(self)
-        self.noteButton.move(distanceBetweenButtons, self.size().height() - (distanceBetweenButtons + buttonsHeight))
-        self.noteButton.resize(self.size().width() - distanceBetweenButtons * 2, buttonsHeight)
-        self.noteButton.setText("заметки")
-        self.noteButton.setStyleSheet('background: rgb(229, 184, 135);;')
 
         self.Glayout = Qt.QGridLayout(self)
         self.Glayout.setSpacing(distanceBetweenButtons)
@@ -173,20 +135,18 @@ class KilterAndBox(QWidget):
 
     def resizeEvent(self, event):
         self.findLineEdit.resize(self.size().width() - (buttonsWidth * 1 + distanceBetweenButtons * 3), buttonsHeight)
-        self.noteButton.move(distanceBetweenButtons, self.size().height() - (distanceBetweenButtons + buttonsHeight))
-        self.noteButton.resize((self.size().width() - distanceBetweenButtons * 2), buttonsHeight)
         self.Widget.setGeometry(distanceBetweenButtons, distanceBetweenButtons * 4 + buttonsHeight * 3,
                                 self.size().width() - distanceBetweenButtons * 2,
-                                self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
+                                self.size().height() - (distanceBetweenButtons * 5 + buttonsHeight * 3))
         self.Scroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2,
-                                self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
+                                self.size().height() - (distanceBetweenButtons * 5 + buttonsHeight * 3))
 
         hight = 80 * self.highItem + 10 * (self.highItem + 1)
         self.WidgetScroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2,
                                       hight)
-        if hight < self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4):
+        if hight < self.size().height() - (distanceBetweenButtons * 5 + buttonsHeight * 3):
             self.WidgetScroll.setGeometry(0, 0, self.size().width() - distanceBetweenButtons * 2 - 19,
-                                          self.size().height() - (distanceBetweenButtons * 6 + buttonsHeight * 4))
+                                          self.size().height() - (distanceBetweenButtons * 5 + buttonsHeight * 3))
         self.moveStuff()
 
     def drawStuff(self):
@@ -365,12 +325,6 @@ class KilterAndBox(QWidget):
             self.openRadioButton.move(buttonsWidth * 2 + distanceBetweenButtons * 3, distanceBetweenButtons)
             self.deleteRadioButton.move(buttonsWidth * 2 + distanceBetweenButtons * 3,
                                         buttonsHeight + distanceBetweenButtons * 2)
-            self.singleSelectionRadioButton.move(buttonsWidth * 3 + distanceBetweenButtons * 4, distanceBetweenButtons)
-            self.multipleSelectionRadioButton.move(buttonsWidth * 3 + distanceBetweenButtons * 4,
-                                                   buttonsHeight + distanceBetweenButtons * 2)
-            self.executeRadioButton.move(buttonsWidth * 4 + distanceBetweenButtons * 5, distanceBetweenButtons)
-            self.planRadioButton.move(buttonsWidth * 4 + distanceBetweenButtons * 5,
-                                      buttonsHeight + distanceBetweenButtons * 2)
         else:
             self.backButton.setVisible(False)
             self.fullBackButton.setVisible(False)
@@ -379,12 +333,6 @@ class KilterAndBox(QWidget):
             self.openRadioButton.move(buttonsWidth * 1 + distanceBetweenButtons * 2, distanceBetweenButtons)
             self.deleteRadioButton.move(buttonsWidth * 1 + distanceBetweenButtons * 2,
                                         buttonsHeight + distanceBetweenButtons * 2)
-            self.singleSelectionRadioButton.move(buttonsWidth * 2 + distanceBetweenButtons * 3, distanceBetweenButtons)
-            self.multipleSelectionRadioButton.move(buttonsWidth * 2 + distanceBetweenButtons * 3,
-                                                   buttonsHeight + distanceBetweenButtons * 2)
-            self.executeRadioButton.move(buttonsWidth * 3 + distanceBetweenButtons * 4, distanceBetweenButtons)
-            self.planRadioButton.move(buttonsWidth * 3 + distanceBetweenButtons * 4,
-                                      buttonsHeight + distanceBetweenButtons * 2)
 
     def back(self):
         self.setWindowTitle(self.upBox[-1][1])
